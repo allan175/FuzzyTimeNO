@@ -35,7 +35,28 @@ static const char * hours[] = {
     "tolv"
 };
 
-/* Runs every second */
+static void norsk_fuzzy(int h, int m, int s){
+
+    if      ((m == 57 && s >= 30) || m > 57) { line1.text = "";         line2.text = "";      h++; }
+    else if ((m == 52 && s >= 30) || m > 52) { line1.text = "fem";      line2.text = "på";    h++; }
+    else if ((m == 47 && s >= 30) || m > 47) { line1.text = "ti";       line2.text = "på";    h++; }
+    else if ((m == 42 && s >= 30) || m > 42) { line1.text = "kvart";    line2.text = "på";    h++; }
+    else if ((m == 37 && s >= 30) || m > 37) { line1.text = "ti over";  line2.text = "halv";  h++; }
+    else if ((m == 32 && s >= 30) || m > 32) { line1.text = "fem over"; line2.text = "halv";  h++; }
+    else if ((m == 27 && s >= 30) || m > 27) { line1.text = "";         line2.text = "halv";  h++; }
+    else if ((m == 22 && s >= 30) || m > 22) { line1.text = "fem på";   line2.text = "halv";  h++; }
+    else if ((m == 17 && s >= 30) || m > 17) { line1.text = "ti på";    line2.text = "halv";  h++; }
+    else if ((m == 12 && s >= 30) || m > 12) { line1.text = "kvart";    line2.text = "over";       }
+    else if ((m ==  7 && s >= 30) || m >  7) { line1.text = "ti";       line2.text = "over";       }
+    else if ((m ==  2 && s >= 30) || m >  2) { line1.text = "fem";      line2.text = "over";       }
+    else {                                     line1.text = "";         line2.text = "";           }
+
+    if (h < 12)  line3.text = hours[h];
+    else         line3.text = hours[h - 12];
+    if (h == 0 || h == 12)
+        line3.text = hours[12];
+}
+
 static void handle_tick(void){
     if (event->tick_time->tm_sec != 30 &&
         event->tick_time->tm_sec != 0)
