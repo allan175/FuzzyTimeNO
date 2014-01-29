@@ -57,6 +57,18 @@ static void norsk_fuzzy(int h, int m, int s){
         line3.text = hours[12];
 }
 
+static void display_time(time_t * const ptm){
+    line1.old_text = line1.text;
+    line2.old_text = line2.text;
+    line3.old_text = line3.text;
+
+    norsk_fuzzy(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+
+    text_layer_set_text(&line1.layer, line1.text);
+    text_layer_set_text(&line2.layer, line2.text);
+    text_layer_set_text(&line3.layer, line3.text);
+}
+
 static void handle_tick(void){
     if (event->tick_time->tm_sec != 30 &&
         event->tick_time->tm_sec != 0)
