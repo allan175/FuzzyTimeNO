@@ -63,7 +63,7 @@ static void display_time(time_t * const ptm){
     line2.old_text = line2.text;
     line3.old_text = line3.text;
 
-    norsk_fuzzy(ptm->, ptm->tm_min, ptm->tm_sec);
+    norsk_fuzzy(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
 
     text_layer_set_text(line1.layer, line1.text);
     text_layer_set_text(line2.layer, line2.text);
