@@ -1,6 +1,7 @@
 /**
  * A watchface made by olemartinorg
  * (hopefully) ported to Pebble SDK 2.0 by Filip Horvei
+ * Lots of help from allan on the Pebble Forums. Thanks! :)
  */
 #include <pebble.h>
 
@@ -62,11 +63,11 @@ static void display_time(time_t * const ptm){
     line2.old_text = line2.text;
     line3.old_text = line3.text;
 
-    norsk_fuzzy(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+    norsk_fuzzy(ptm->, ptm->tm_min, ptm->tm_sec);
 
-    text_layer_set_text(&line1.layer, line1.text);
-    text_layer_set_text(&line2.layer, line2.text);
-    text_layer_set_text(&line3.layer, line3.text);
+    text_layer_set_text(line1.layer, line1.text);
+    text_layer_set_text(line2.layer, line2.text);
+    text_layer_set_text(line3.layer, line3.text);
 }
 
 static void handle_tick(void){
@@ -79,19 +80,18 @@ static void handle_tick(void){
 }
 
 void text_layer(word_t * word, GRect frame, GFont font){
-    text_layer_init(&word->layer, frame);
-    text_layer_set_text(&word->layer, "");
-    text_layer_set_text_color(&word->layer, GColorWhite);
-    text_layer_set_background_color(&word->layer, GColorClear);
-    text_layer_set_font(&word->layer, font);
-    layer_add_child(&window.layer, &word->layer.layer);
+    text_layer_set_text(word->layer, "");
+    text_layer_set_text_color(word->layer, GColorWhite);
+    text_layer_set_background_color(word->layer, GColorClear);
+    text_layer_set_font(word->layer, font);
+    layer_add_child(window.layer, word->layer.layer);
 }
 
 static void handle_init(void){
 	
 	window = window_create();
-    window_stack_push(&window, true);
-    window_set_background_color(&window, GColorBlack);
+    window_stack_push(window, true);
+    window_set_background_color(window, GColorBlack);
 
     font_thin = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_THIN_33));
     font_thick = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_THICK_33));
