@@ -1,0 +1,35 @@
+{
+    "versionLabel": "1.0",
+    "uuid": "57b748ff-454f-456f-8117-fbeb9053244e",
+    "appKeys": {},
+    "longName": "Fuzzy Time NO",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "FuzzyTimeNO",
+    "companyName": "Filip Horvei",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "font",
+                "name": "FONT_THICK_33",
+                "file": "fonts/Raleway-Bold.ttf"
+            },
+            {
+                "type": "font",
+                "name": "FONT_THIN_33",
+                "file": "fonts/Raleway-Light.ttf"
+            },
+            {
+                "menuIcon": true,
+                "type": "png",
+                "name": "IMAGE_MENU_ICON",
+                "file": "images/menu_icon.png"
+            }
+        ]
+    }
+}

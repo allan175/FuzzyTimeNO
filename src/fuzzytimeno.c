@@ -1,0 +1,83 @@
+/**
+ * A watchface made by olemartinorg
+ * (hopefully) ported to Pebble SDK 2.0 by Filip Horvei
+ */
+#include <pebble.h>
+
+static Window window;
+static GFont font_thin;
+static GFont font_thick;
+
+typedef struct {
+    TextLayer* layer;
+    PropertyAnimation anim;
+    const char * text;
+    const char * old_text;
+} word_t;
+
+static word_t line1;
+static word_t line2;
+static word_t line3;
+
+static const char * hours[] = {
+    "",
+    "ett",
+    "to",
+    "tre",
+    "fire",
+    "fem",
+    "seks",
+    "sju",
+    "åtte",
+    "ni",
+    "ti",
+    "elleve",
+    "tolv"
+};
+
+/* Runs every second */
+static void handle_tick(void){
+    if (event->tick_time->tm_sec != 30 &&
+        event->tick_time->tm_sec != 0)
+        return;
+
+    time_t * ptm = event->tick_time;
+    display_time(ptm);
+}
+
+void text_layer(word_t * word, GRect frame, GFont font){
+    text_layer_init(&word->layer, frame);
+    text_layer_set_text(&word->layer, "");
+    text_layer_set_text_color(&word->layer, GColorWhite);
+    text_layer_set_background_color(&word->layer, GColorClear);
+    text_layer_set_font(&word->layer, font);
+    layer_add_child(&window.layer, &word->layer.layer);
+}
+
+static void handle_init(void){
+	
+	window = window_create();
+    window_stack_push(&window, true);
+    window_set_background_color(&window, GColorBlack);
+
+    font_thin = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_THIN_33));
+    font_thick = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_THICK_33));
+
+    text_layer(&line1, GRect(4, 28, 140, 40), font_thin);
+    text_layer(&line2, GRect(4, 62, 140, 40), font_thin);
+    text_layer(&line3, GRect(4, 97, 140, 40), font_thick);
+
+	tick_timer_service_subscribe(MINUTE_UNIT, handle_tick);
+}
+
+static void handle_deinit(void){
+
+    fonts_unload_custom_font(font_thin);
+    fonts_unload_custom_font(font_thick);
+}
+
+int main(void) {
+        handle_init();
+        app_event_loop();
+        handle_deinit();
+}
