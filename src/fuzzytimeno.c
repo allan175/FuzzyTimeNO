@@ -5,7 +5,7 @@
  */
 #include <pebble.h>
 
-static Window window;
+static Window* window;
 static GFont font_thin;
 static GFont font_thick;
 
@@ -58,7 +58,7 @@ static void norsk_fuzzy(int h, int m, int s){
         line3.text = hours[12];
 }
 
-static void display_time(time_t * const ptm){
+static void display_time(struct tm *ptm){
     line1.old_text = line1.text;
     line2.old_text = line2.text;
     line3.old_text = line3.text;
@@ -70,13 +70,12 @@ static void display_time(time_t * const ptm){
     text_layer_set_text(line3.layer, line3.text);
 }
 
-static void handle_tick(void){
-    if (event->tick_time->tm_sec != 30 &&
-        event->tick_time->tm_sec != 0)
+static void handle_tick(struct tm *tick_time, TimeUnits units_changed){
+    if (tick_time->tm_sec != 30 &&
+        tick_time->tm_sec != 0)
         return;
 
-    time_t * ptm = event->tick_time;
-    display_time(ptm);
+    display_time(tick_time);
 }
 
 void text_layer(word_t * word, GRect frame, GFont font){
@@ -84,7 +83,7 @@ void text_layer(word_t * word, GRect frame, GFont font){
     text_layer_set_text_color(word->layer, GColorWhite);
     text_layer_set_background_color(word->layer, GColorClear);
     text_layer_set_font(word->layer, font);
-    layer_add_child(window.layer, word->layer.layer);
+    layer_add_child(window->layer, word->layer.layer);
 }
 
 static void handle_init(void){
